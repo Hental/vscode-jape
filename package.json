@@ -1,0 +1,25 @@
+{
+    "name": "vscode-jape",
+    "displayName": "vscode-jape",
+    "description": "jape syntax highlight",
+    "version": "0.0.1",
+    "publisher": "test",
+    "engines": {
+        "vscode": "^1.22.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "jape",
+            "extensions": [".jape"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "",
+            "scopeName": "source.jape",
+            "path": "./syntaxes/.tmLanguage.json"
+        }]
+    }
+}

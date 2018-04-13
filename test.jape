@@ -1,0 +1,253 @@
+Phase:PersonInfo
+Input: Lookup Token
+Options: control = appelt
+
+//多余字符
+Macro: TOKENS
+(({Token.kind == word})|({Token.kind == number}))*
+//出生词汇
+Macro: BORN
+({Token.string == "生"}|
+ (
+ {Token.string == "出"}
+ {Token.string == "生"}
+ )
+)
+//加入/参加
+Macro: JOIN
+(
+({Token.string == "加"}{Token.string == "入"})|
+({Token.string == "参"}{Token.string == "加"})
+)
+
+//担任
+Macro: ASSUME
+(
+({Token.string == "担"}{Token.string == "任"})|
+({Token.string == "现"}{Token.string == "任"})|
+({Token.string == "任"})
+)
+
+//毕业
+Macro: GRADUATE
+(
+{Token.string == "毕"}
+{Token.string == "业"}
+)
+
+//介词
+Macro: PREP
+(
+ {Lookup.majorType == prep}
+)
+//时间
+Macro: TIME
+(
+ {Lookup.majorType == time}
+)
+//地点
+Macro: LOCATION
+(
+ {Lookup.majorType == location}
+)
+//人
+Macro: PERSON
+(
+ {Lookup.minorType == named_person}
+)
+//职称
+Macro: JOB_TITLE
+(
+ ({Lookup.majorType == organization}|{Lookup.majorType == location})?
+ ({Lookup.majorType == job_title})
+)
+
+//性别
+Macro: SEX
+(
+ {Token.string == "男"}|{Token.string == "女"}
+)
+
+//机构组织
+Macro: ORGANIZATION
+(
+ {Lookup.majorType == organization}
+)
+
+//专业
+Macro: MAJOR
+(
+ ({Lookup.majorType == major})+
+)
+
+//党派
+Macro: PARTY
+(
+  (
+  ({Lookup.minorType == country})?
+  {Lookup.minorType == party})|
+  ({Lookup.majorType == organization})
+)
+
+//研究对象
+Rule: ObjectRule
+(PERSON)
+:person
+-->
+:person.Object = {rule = ObjectRule}
+
+//性别
+Rule: SexRule
+(SEX)
+:sex
+-->
+:sex.Sex = {rule = SexRule}
+
+//民族
+Rule: NationalityRule
+(
+  {Lookup.majorType == nationality}
+)
+:n
+-->
+:n.Nationality = {rule = NationalityRule}
+
+
+//只有生日
+Rule: BirthdayRule
+Priority: 50
+(
+  (BORN)
+  (PREP)
+  (TIME)
+  :time1
+)|
+(
+ (PREP)?
+ (TIME)
+ :time2
+ (BORN)
+)
+-->
+:time1.Birthday = {rule = BirthdayRule}
+,:time2.Birthday = {rule = BirthdayRule}
+
+//只有出生地
+Rule: HomePlaceRule
+Priority: 50
+((BORN)
+(PREP)
+(LOCATION)
+:location1
+)|
+(
+(LOCATION)
+:location2
+{Token.string == "人"}
+)
+-->
+:location1.HomePlace = {rule = HomePlaceRule}
+,:location2.HomePlace = {rule = HomePlaceRule}
+
+//出生地+生日
+Rule: HomePlaceAndBirthdayRule
+Priority: 60
+(TIME)
+:time
+(BORN)
+(PREP)
+(LOCATION)
+:location
+-->
+:time.Birthday = {rule = HomePlaceAndBirthdayRule}
+,:location.HomePlace = {rule = HomePlaceAndBirthdayRule}
+
+//加入共产党
+Rule: JoinPartyRule
+(TIME)
+:time
+(JOIN)
+(PARTY)
+:party
+-->
+:time.JoinPartyTime = {rule = JoinPartyRule}
+,:party.JoinedParty = {rule = JoinPartyRule}
+
+//现任总经理
+Rule: AssumeJobRule
+(ASSUME)
+(
+(JOB_TITLE)
+:job
+({Token})?
+)+
+-->
+:job.AssumedJob = {rule = AssumeJobRule}
+
+//毕业学校
+Rule: GraduateSchoolRule
+Priority: 50
+((ORGANIZATION)
+:school1
+(TOKENS)
+(GRADUATE))|
+(
+(GRADUATE)
+(TOKENS)
+(ORGANIZATION)
+:school2
+)
+-->
+:school1.GraduateSchool = {rule = GraduateSchoolRule}
+,:school2.GraduateSchool = {rule = GraduateSchoolRule}
+
+
+//专业
+Rule: MajorRule
+Priority: 50
+((MAJOR)
+:major1
+(TOKENS)
+(GRADUATE))|
+(
+(GRADUATE)
+(TOKENS)
+(MAJOR)
+:major2
+)
+-->
+:major1.Major = {rule = MajorRule}
+,:major2.Major = {rule = MajorRule}
+
+//专业+学校
+Rule: MajorAndSchoolRule2
+Priority: 60
+(ORGANIZATION)
+:school1
+(TOKENS)*
+((
+(TOKENS)*
+(MAJOR)
+:major1
+)+)
+(TOKENS)*
+(GRADUATE)
+-->
+:major1.Major = {rule = MajorAndSchoolRule2}
+,:school1.GraduateSchool = {rule = MajorAndSchoolRule2}
+
+//学历
+Rule: DiplomaRule
+({Lookup.majorType == diploma})
+:diploma
+-->
+:diploma.Diploma = {rule = DiplomaRule}
+
+//学位
+Rule: DegreeRule
+((MAJOR)*
+{Lookup.majorType == degree}
+)
+:degree
+-->
+:degree.Degree = {rule = DegreeRule}
