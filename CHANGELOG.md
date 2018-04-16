@@ -6,6 +6,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 - Initial release
 
-## [0.0.1] - 2018.04.16
+## [0.1.0] - 2018.04.16
 ### Added
 - complete basic

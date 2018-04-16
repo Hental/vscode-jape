@@ -2,8 +2,16 @@
     "name": "vscode-jape",
     "displayName": "vscode-jape",
     "description": "jape syntax highlight",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "lt",
+    "homepage": "https://github.com/Hental/vscode-jape",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Hental/vscode-jape.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Hental/vscode-jape/issues"
+    },
     "engines": {
         "vscode": "^1.22.0"
     },
@@ -11,15 +19,21 @@
         "Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "jape",
-            "extensions": [".jape"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "jape",
-            "scopeName": "text.jape",
-            "path": "./syntaxes/jape.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "jape",
+                "extensions": [
+                    ".jape"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "jape",
+                "scopeName": "text.jape",
+                "path": "./syntaxes/jape.tmLanguage.json"
+            }
+        ]
     }
 }
