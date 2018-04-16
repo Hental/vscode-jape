@@ -1,0 +1,112 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "jape",
+	"scopeName": "text.jape",
+	"fileTypes": [
+		"jape"
+	],
+	"patterns": [
+		{
+			"match": "(Phase|Input|Options|Macro|Rule|Priority):\\s?(.+)",
+			"captures": {
+				"1": {
+					"name": "keyword.other"
+				},
+				"2": {
+					"name": "variable"
+				}
+			}
+		},
+		{
+			"match": "(\\*|\\?|\\+|\\|)",
+			"captures": {
+				"1": {
+					"name": "keyword.other.unit"
+				}
+			}
+		},
+		{
+			"begin": "\/\/",
+			"end": "\r?\n",
+			"name": "comment.line"
+		},
+		{
+			"name": "string.quoted.double",
+			"begin": "\"",
+			"end": "\""
+		},
+		{
+			"name": "string.quoted.single",
+			"begin": "'",
+			"end": "'"
+		},
+		{
+			"name": "variable.name",
+			"match": "==\\s?(\\w+)",
+			"captures": {
+				"1": {
+					"name": "variable.name"
+				}
+			}
+		},
+		{
+			"match": "(\\w+)\\.(\\w+)\\s?(==)\\s?(\\w+)",
+			"captures": {
+				"1": {
+					"name": "entity.name.class"
+				},
+				"2": {
+					"name": "variable"
+				},
+				"3": {
+					"name": "keyword.operator"
+				},
+				"4": {
+					"name": "variable"
+				}
+			}
+		},
+		{
+			"match": "-->",
+			"name": "keyword"
+		},
+		{
+			"match": "([_\\w0-9]+)\\.([_\\w0-9]+)",
+			"captures": {
+				"1": {
+					"name": "entity.name.class"
+				},
+				"2": {
+					"name": "variable"
+				}
+			}
+		},
+		{
+			"match": "\\((\\w+)\\)",
+			"captures": {
+				"1": {
+					"name": "variable"
+				}
+			}
+		},
+		{
+			"match": ":(\\w+)\\s+",
+			"captures": {
+				"1": {
+					"name": "entity.name.class"
+				}
+			}
+		},
+		{
+			"match": "(rule)\\s?=\\s?(\\w+)",
+			"captures": {
+				"1": {
+					"name": "keyword"
+				},
+				"2": {
+					"name": "variable"
+				}
+			}
+		}
+	]
+}

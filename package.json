@@ -3,7 +3,7 @@
     "displayName": "vscode-jape",
     "description": "jape syntax highlight",
     "version": "0.0.1",
-    "publisher": "test",
+    "publisher": "lt",
     "engines": {
         "vscode": "^1.22.0"
     },
@@ -17,9 +17,9 @@
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
-            "language": "",
-            "scopeName": "source.jape",
-            "path": "./syntaxes/.tmLanguage.json"
+            "language": "jape",
+            "scopeName": "text.jape",
+            "path": "./syntaxes/jape.tmLanguage.json"
         }]
     }
 }

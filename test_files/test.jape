@@ -2,7 +2,7 @@ Phase:PersonInfo
 Input: Lookup Token
 Options: control = appelt
 
-//多余字符
+// 多余字符
 Macro: TOKENS
 (({Token.kind == word})|({Token.kind == number}))*
 //出生词汇
